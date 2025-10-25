@@ -1,13 +1,11 @@
-package com.example.xrefintegration.model;
+package com.example.xrefintegration.model.article;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity

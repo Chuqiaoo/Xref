@@ -1,9 +1,7 @@
-package com.example.xrefintegration.model;
+package com.example.xrefintegration.model.article;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,7 +34,7 @@ public class Author {
 
     @ManyToOne
     @JoinColumn(name = "article_id")
-    @JsonIgnore// breaks the Article ↔ Author loop
+    @JsonIgnore  // breaks the Article ↔ Author loop
     private Article article;
 }
 

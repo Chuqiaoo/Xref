@@ -1,7 +1,7 @@
 package com.example.xrefintegration.service;
 
 
-import com.example.xrefintegration.model.*;
+import com.example.xrefintegration.model.article.*;
 import com.example.xrefintegration.repository.ArticleRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +27,8 @@ public class CrossrefService {
             try {
                 String url = "https://api.crossref.org/works/" + doi;
                 JsonNode message = restTemplate.getForObject(url, JsonNode.class).get("message");
-
                 // create article
                 Article article = new Article();
-
                 // title is a list, take the first element, why is a list?
                 JsonNode titleNode = message.get("title");
                 if (titleNode != null && titleNode.isArray() && !titleNode.isEmpty()) {
@@ -44,29 +41,23 @@ public class CrossrefService {
                     for (JsonNode authorNode : authorNodes) {
                         Author author = objectMapper.treeToValue(authorNode, Author.class);
                         author.setArticle(article); // link back to parent
-
-                        // Link affiliations to this author
+                        // link affiliations to this author
                         if (author.getAffiliation() != null) {
                             for (Affiliation affiliation : author.getAffiliation()) {
                                 affiliation.setAuthor(author);
                             }
                         }
-
                         authors.add(author);
                     }
-
                     article.setAuthor(authors);
                 }
-
                 // data
                 JsonNode publishedNode = message.get("published");
                 if (publishedNode != null) {
                     Published published = objectMapper.treeToValue(publishedNode, Published.class);
                     article.setPublishDate(published.getPublishedDate());
                 }
-
-
-                //review
+                // review
                 JsonNode reviewNode = message.get("review");
                 if (reviewNode != null) {
                     Review review = objectMapper.treeToValue(reviewNode, Review.class);
@@ -82,6 +73,4 @@ public class CrossrefService {
         }
         return articles;
     }
-
-
 }

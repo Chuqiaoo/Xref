@@ -1,4 +1,4 @@
-package com.example.xrefintegration.model;
+package com.example.xrefintegration.model.article;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,9 +15,9 @@ public class Published {
     public LocalDate getPublishedDate() {
         if (dateParts != null && !dateParts.isEmpty()) {
             List<Integer> parts = dateParts.get(0);
-            int year = parts.size() > 0 ? parts.get(0) : 0;
-            int month = parts.size() > 1 ? parts.get(1) : 0;
-            int day = parts.size() > 2 ? parts.get(2) : 0;
+            int year = !parts.isEmpty() ? parts.get(0) : 0;
+            int month = parts.size() > 1 ? parts.get(1) : 1;
+            int day = parts.size() > 2 ? parts.get(2) : 1;
             return LocalDate.of(year, month, day);
         }
         return null;
