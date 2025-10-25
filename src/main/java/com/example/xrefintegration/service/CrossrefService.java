@@ -1,7 +1,7 @@
 package com.example.xrefintegration.service;
 
 
-import com.example.xrefintegration.model.article.*;
+import com.example.xrefintegration.model.*;
 import com.example.xrefintegration.repository.ArticleRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
