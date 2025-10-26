@@ -1,7 +1,7 @@
 package com.example.xrefintegration.controller;
 
 
-import com.example.xrefintegration.model.Article;
+import com.example.xrefintegration.model.ArticleDto;
 import com.example.xrefintegration.service.CrossrefService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,7 +43,7 @@ public class CrossRefController {
                     )
             )
     )
-    public List<Article> getArticleInfoByDoi(@RequestBody List<String> dois) {
+    public List<ArticleDto> getArticleInfoByDoi(@RequestBody List<String> dois) {
         if (dois.size() > 200) throw new InvalidParameterException("DOI must be less than 200");
         return crossrefService.fetchAndSaveArticles(dois);
     }

@@ -1,7 +1,11 @@
 package com.example.xrefintegration.service;
 
 
+import com.example.xrefintegration.entity.Affiliation;
+import com.example.xrefintegration.entity.Article;
+import com.example.xrefintegration.entity.Author;
 import com.example.xrefintegration.model.*;
+import com.example.xrefintegration.entity.Review;
 import com.example.xrefintegration.repository.ArticleRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor // auto-generates constructor for all final fields(constructor injection)
@@ -20,9 +25,9 @@ public class CrossrefService {
     private final RestTemplate restTemplate = new RestTemplate(); // HTTP client to make HTTP calls
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<Article> fetchAndSaveArticles(List<String> dois) {
+    public List<ArticleDto> fetchAndSaveArticles(List<String> dois) {
 
-        List<Article> articles = new ArrayList<>();
+        List<ArticleDto> articles = new ArrayList<>();
         for (String doi : dois) {
             try {
                 String url = "https://api.crossref.org/works/" + doi;
@@ -65,7 +70,9 @@ public class CrossrefService {
                 }
                 // Save everything
                 articleInfoRepository.save(article);
-                articles.add(article);
+                // Map to DTO
+                ArticleDto dto = mapToDto(article);
+                articles.add(dto);
 
             } catch (Exception e) {
                 System.err.println("Error fetching DOI: " + doi + " -> " + e.getMessage());
@@ -73,4 +80,35 @@ public class CrossrefService {
         }
         return articles;
     }
+
+    private ArticleDto mapToDto(Article article) {
+        List<AuthorDto> authors = article.getAuthor() != null
+                ? article.getAuthor().stream()
+                .map(a -> new AuthorDto(
+                        a.getGiven(),
+                        a.getFamily(),
+                        a.getSequence(),
+                        a.getOricd(),
+                        a.getAuthenticatedOrcid(),
+                        a.getSuffix(),
+                        a.getAffiliation() != null
+                                ? a.getAffiliation().stream()
+                                .map(aff -> new AffiliationDto(aff.getName()))
+                                .toList()
+                                : Collections.emptyList()
+                ))
+                .toList()
+                : Collections.emptyList();
+
+
+        ReviewDto reviewDto = null;
+        if (article.getReview() != null) {
+            Review r = article.getReview();
+            reviewDto = new ReviewDto(r.getType(), r.getRecommendation(), r.getStage());
+        }
+
+        return new ArticleDto(article.getTitle(), article.getPublishDate(), authors, reviewDto);
+    }
+
+
 }
