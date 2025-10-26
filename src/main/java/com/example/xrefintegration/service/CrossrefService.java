@@ -10,6 +10,7 @@ import com.example.xrefintegration.repository.ArticleRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor // auto-generates constructor for all final fields(constructor injection)
 @Service
 public class CrossrefService {
@@ -30,6 +32,7 @@ public class CrossrefService {
         List<ArticleDto> articles = new ArrayList<>();
         for (String doi : dois) {
             try {
+                log.debug("Fetching article metadata for DOI: {}", doi);
                 String url = "https://api.crossref.org/works/" + doi;
                 JsonNode message = restTemplate.getForObject(url, JsonNode.class).get("message");
                 // create article
@@ -73,11 +76,12 @@ public class CrossrefService {
                 // Map to DTO
                 ArticleDto dto = mapToDto(article);
                 articles.add(dto);
-
+                log.info("Saved article '{}' successfully for DOI {}", article.getTitle(), doi);
             } catch (Exception e) {
-                System.err.println("Error fetching DOI: " + doi + " -> " + e.getMessage());
+                log.error("Failed to fetch or save article for DOI {}: {}", doi, e.getMessage());
             }
         }
+        log.info("Fetch completed: {} / {} DOIs processed", articles.size(), dois.size());
         return articles;
     }
 
