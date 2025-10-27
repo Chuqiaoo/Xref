@@ -1,6 +1,6 @@
 package com.example.xrefintegration.controller;
 
-import com.example.xrefintegration.entity.Article;
+import com.example.xrefintegration.model.Article;
 import com.example.xrefintegration.repository.ArticleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

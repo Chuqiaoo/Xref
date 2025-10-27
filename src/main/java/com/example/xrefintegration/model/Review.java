@@ -1,4 +1,4 @@
-package com.example.xrefintegration.entity;
+package com.example.xrefintegration.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Embeddable;

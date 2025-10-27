@@ -1,6 +1,5 @@
-package com.example.xrefintegration.model;
+package com.example.xrefintegration.dto;
 
-import com.example.xrefintegration.entity.Affiliation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

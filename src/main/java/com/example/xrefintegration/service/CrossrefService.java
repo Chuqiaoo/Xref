@@ -1,11 +1,11 @@
 package com.example.xrefintegration.service;
 
 
-import com.example.xrefintegration.entity.Affiliation;
-import com.example.xrefintegration.entity.Article;
-import com.example.xrefintegration.entity.Author;
-import com.example.xrefintegration.model.*;
-import com.example.xrefintegration.entity.Review;
+import com.example.xrefintegration.model.Affiliation;
+import com.example.xrefintegration.model.Article;
+import com.example.xrefintegration.model.Author;
+import com.example.xrefintegration.dto.*;
+import com.example.xrefintegration.model.Review;
 import com.example.xrefintegration.repository.ArticleRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

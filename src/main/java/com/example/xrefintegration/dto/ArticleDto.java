@@ -1,4 +1,4 @@
-package com.example.xrefintegration.model;
+package com.example.xrefintegration.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

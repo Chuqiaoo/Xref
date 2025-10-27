@@ -1,7 +1,7 @@
 package com.example.xrefintegration.controller;
 
 
-import com.example.xrefintegration.model.ArticleDto;
+import com.example.xrefintegration.dto.ArticleDto;
 import com.example.xrefintegration.service.CrossrefService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
